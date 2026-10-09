@@ -3,9 +3,7 @@ import random
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-from models import (all_users, find_user, user_by_login, login_exists,
-                    add_user, update_user, delete_user,
-                    unlock_user, register_fail, reset_attempts)
+from models import *
 
 CURRENT_USER = None
 CURRENT_EDIT = None
@@ -224,6 +222,7 @@ def open_user():
 
 def open_edit_user(login):
     global CURRENT_EDIT
+    login = str(login)
     user = user_by_login(login)
     if user is None:
         messagebox.showwarning("Внимание", "Сначала выберите строку в таблице.")
@@ -257,6 +256,7 @@ def open_edit_user(login):
         refresh_lock()
         messagebox.showinfo("Готово",
                             "Пользователь " + CURRENT_EDIT + " разблокирован.")
+    
     def do_save():
         name = e_name.get().strip()
         password = e_pass.get().strip()
@@ -266,6 +266,7 @@ def open_edit_user(login):
         update_user(CURRENT_EDIT, password, combo_role.get(), name)
         messagebox.showinfo("Готово", "Данные пользователя сохранены.")
         open_admin()
+    
     def do_delete():
         if CURRENT_EDIT == "admin":
             messagebox.showerror("Ошибка",
@@ -276,6 +277,7 @@ def open_edit_user(login):
             delete_user(CURRENT_EDIT)
             messagebox.showinfo("Готово", "Пользователь удалён.")
             open_admin()
+    
     row = tk.Frame(container, bg=BG)
     row.pack(fill="x")
     make_button("Сохранить", do_save, parent=row).pack(side="left", padx=(0, 6))
@@ -287,6 +289,7 @@ def open_admin():
     clear_screen()
     make_title("Панель администратора").pack(pady=(0, 5))
     make_label("Вы вошли как: " + CURRENT_USER["login"]).pack(fill="x", pady=(0, 10))
+    
     tree = ttk.Treeview(container,
                         columns=("login", "full_name", "role", "locked"),
                         show="headings", height=8)
@@ -302,6 +305,7 @@ def open_admin():
         tree.insert("", "end", values=(u["login"], u["full_name"], u["role"],
                                        "да" if u["locked"] else "нет"))
     tree.pack(fill="both", expand=True, pady=(0, 10))
+    
     def edit_selected():
         selected = tree.selection()
         if not selected:
@@ -327,6 +331,7 @@ def save_user(login, password, role, full_name):
     add_user(login, password, role, full_name.strip())
     messagebox.showinfo("Готово", "Пользователь " + login + " добавлен.")
     open_admin()
+
 
 def open_add_user():
     clear_screen()
