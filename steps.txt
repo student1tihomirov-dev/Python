@@ -1,0 +1,19 @@
+
+Отчет
+Name    Status type         initator size   time
+notes	200	documeStaant	Other	1.0 kB	2 ms
+
+http://127.0.0.1:8000/api/notes?id_user=1
+Name    Status type         initator size   time
+notes?id_user=1	200	document	Other	0.3 kB	2 ms
+
+
+http://127.0.0.1:8000/api/notes?id_user=abc
+Name    Status type         initator size   time
+notes?id_user=abc	400	document	Other	0.2 kB	4 ms
+
+
+http://127.0.0.1:8000/api/notes?error=1
+
+Name           Status type         initator size   time
+notes?error=1	500	document	Other	0.2 kB	2 ms
